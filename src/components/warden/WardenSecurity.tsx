@@ -222,7 +222,7 @@ const WardenSecurity: React.FC<WardenSecurityProps> = ({
                       <td className="py-3 font-medium text-gray-800">{record.studentName}</td>
                       <td className="py-3 text-gray-600">{record.roomNumber}</td>
                       <td className="py-3 text-gray-600">{record.entryTime}</td>
-                      <td className="py-3 text-gray-600">{record.exitTime || 'Still inside'}</td>
+                      <td className="py-3 text-gray-600">{record.exitTime || 'Not exited'}</td>
                       <td className="py-3 text-gray-600">{record.date}</td>
                       <td className="py-3">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${getAttendanceStatusColor(record.status)}`}>
@@ -258,7 +258,7 @@ const WardenSecurity: React.FC<WardenSecurityProps> = ({
                       <td className="py-3 text-gray-600">{visitor.roomNumber}</td>
                       <td className="py-3 text-gray-600">{visitor.purpose}</td>
                       <td className="py-3 text-gray-600">{visitor.inTime}</td>
-                      <td className="py-3 text-gray-600">{visitor.outTime || 'Still visiting'}</td>
+                      <td className="py-3 text-gray-600">{visitor.outTime || 'Not checked out'}</td>
                       <td className="py-3 text-gray-600">{visitor.date}</td>
                     </tr>
                   ))}

@@ -21,7 +21,7 @@ const mockAttendanceData = [
 
 const mockVisitorData = [
   { id: '1', visitorName: 'Robert Doe', studentName: 'John Doe', roomNumber: 'A-101', purpose: 'Family Visit', inTime: '14:30', outTime: '17:00', date: '2025-01-15' },
-  { id: '2', visitorName: 'Mary Smith', studentName: 'Jane Smith', roomNumber: 'B-203', purpose: 'Friend', inTime: '16:00', outTime: null, date: '2025-01-15' },
+  { id: '2', visitorName: 'Mary Smith', studentName: 'Jane Smith', roomNumber: 'B-203', purpose: 'Friend', inTime: '16:00', outTime: '19:30', date: '2025-01-15' },
   { id: '3', visitorName: 'David Brown', studentName: 'Mike Johnson', roomNumber: 'A-205', purpose: 'Relative', inTime: '10:00', outTime: '18:00', date: '2025-01-15' }
 ];
 
@@ -191,7 +191,7 @@ const SecurityDashboard: React.FC<SecurityDashboardProps> = ({
                       <td className="py-3 px-4 font-medium text-gray-800">{record.studentName}</td>
                       <td className="py-3 px-4 text-gray-600">{record.roomNumber}</td>
                       <td className="py-3 px-4 text-gray-600">{record.entryTime}</td>
-                      <td className="py-3 px-4 text-gray-600">{record.exitTime || 'Still inside'}</td>
+                      <td className="py-3 px-4 text-gray-600">{record.exitTime || 'Not exited'}</td>
                       <td className="py-3 px-4 text-gray-600">{record.date}</td>
                       <td className="py-3 px-4">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${getAttendanceStatusColor(record.status)}`}>
@@ -233,13 +233,13 @@ const SecurityDashboard: React.FC<SecurityDashboardProps> = ({
                       <td className="py-3 px-4 text-gray-600">{visitor.roomNumber}</td>
                       <td className="py-3 px-4 text-gray-600">{visitor.purpose}</td>
                       <td className="py-3 px-4 text-gray-600">{visitor.inTime}</td>
-                      <td className="py-3 px-4 text-gray-600">{visitor.outTime || 'Still visiting'}</td>
+                      <td className="py-3 px-4 text-gray-600">{visitor.outTime || 'Not checked out'}</td>
                       <td className="py-3 px-4 text-gray-600">{visitor.date}</td>
                       <td className="py-3 px-4">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                           visitor.outTime ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
                         }`}>
-                          {visitor.outTime ? 'CHECKED OUT' : 'STILL VISITING'}
+                          {visitor.outTime ? 'CHECKED OUT' : 'NOT CHECKED OUT'}
                         </span>
                       </td>
                     </tr>
@@ -334,6 +334,24 @@ const SecurityDashboard: React.FC<SecurityDashboardProps> = ({
         </header>
 
         <main className="p-6">
+          {/* Information Banner */}
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
+            <div className="flex items-start gap-3">
+              <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span className="text-white text-sm font-bold">i</span>
+              </div>
+              <div>
+                <h4 className="text-blue-800 font-semibold mb-2">Security Officer Responsibilities</h4>
+                <div className="text-blue-700 text-sm space-y-1">
+                  <p>• <strong>Entry/Exit Logs:</strong> Record student entry and exit times manually or via QR scanner</p>
+                  <p>• <strong>Status Classification:</strong> Mark as "On Time" (before 10 PM), "Late Entry" (10-11 PM), or "Curfew Violation" (after 11 PM)</p>
+                  <p>• <strong>Visitor Management:</strong> Register visitors on entry and mark checkout times when they leave</p>
+                  <p>• <strong>Investigation Alerts:</strong> Receive investigation requests from Warden and mark as resolved when completed</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Search and Filter Controls */}
           <div className="bg-white rounded-xl shadow-sm border p-6 mb-6">
             <div className="flex flex-wrap gap-4">
