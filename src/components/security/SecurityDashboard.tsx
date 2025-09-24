@@ -67,6 +67,65 @@ const SecurityDashboard: React.FC<SecurityDashboardProps> = ({
     alert('Security alert marked as resolved!');
   };
 
+  const handleCreateOutpass = (e: React.FormEvent) => {
+    e.preventDefault();
+    const outpass = {
+      id: Date.now().toString(),
+      studentName: newOutpass.studentName,
+      roomNumber: newOutpass.roomNumber,
+      outpassType: newOutpass.outpassType,
+      parentApproval: newOutpass.parentApproval,
+      outTime: newOutpass.outTime,
+      returnTime: null,
+      expectedReturn: newOutpass.expectedReturn,
+      date: new Date().toISOString().split('T')[0],
+      status: 'not_returned',
+      purpose: newOutpass.purpose,
+      image: newOutpass.image ? URL.createObjectURL(newOutpass.image) : undefined
+    };
+    setOutpassData(prev => [...prev, outpass]);
+    setNewOutpass({
+      studentName: '',
+      roomNumber: '',
+      outpassType: 'day',
+      parentApproval: false,
+      outTime: '',
+      expectedReturn: '',
+      purpose: '',
+      image: null
+    });
+    setShowOutpassForm(false);
+    alert('Outpass recorded successfully!');
+  };
+
+  const handleMarkReturn = (outpassId: string) => {
+    const currentTime = new Date().toLocaleTimeString('en-US', { hour12: false });
+    setOutpassData(prev => 
+      prev.map(outpass => 
+        outpass.id === outpassId 
+          ? { ...outpass, returnTime: currentTime, status: returnStatus }
+          : outpass
+      )
+    );
+    setEditingOutpass(null);
+    alert('Return time recorded successfully!');
+  };
+
+  const getOutpassStatusColor = (status: string) => {
+    switch (status) {
+      case 'on_time':
+        return 'bg-green-100 text-green-800';
+      case 'late_return':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'curfew_violation':
+        return 'bg-red-100 text-red-800';
+      case 'not_returned':
+        return 'bg-blue-100 text-blue-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
   const filteredAlerts = securityAlerts.filter(alert => {
     const matchesSearch = alert.studentName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          alert.description.toLowerCase().includes(searchTerm.toLowerCase());
