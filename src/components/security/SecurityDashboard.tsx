@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   UserCheck, Users, Clock, AlertTriangle, CheckCircle, 
-  Search, Calendar, LogOut, Menu, X, Home, Eye, MessageSquare
+  Search, Calendar, LogOut, Menu, X, Home, Eye, MessageSquare, Plus, Upload
 } from 'lucide-react';
 import { User as UserType, SecurityAlert } from '../../App';
 
@@ -25,6 +25,12 @@ const mockVisitorData = [
   { id: '3', visitorName: 'David Brown', studentName: 'Mike Johnson', roomNumber: 'A-205', purpose: 'Relative', inTime: '10:00', outTime: '18:00', date: '2025-01-15' }
 ];
 
+const mockOutpassData = [
+  { id: '1', studentName: 'John Doe', roomNumber: 'A-101', outpassType: 'day', parentApproval: true, outTime: '09:00', returnTime: '18:30', expectedReturn: '20:00', date: '2025-01-15', status: 'on_time', purpose: 'Medical appointment' },
+  { id: '2', studentName: 'Jane Smith', roomNumber: 'B-203', outpassType: 'night', parentApproval: true, outTime: '19:00', returnTime: null, expectedReturn: '23:00', date: '2025-01-15', status: 'not_returned', purpose: 'Family function' },
+  { id: '3', studentName: 'Mike Johnson', roomNumber: 'A-205', outpassType: 'long', parentApproval: true, outTime: '08:00', returnTime: '23:45', expectedReturn: '22:00', date: '2025-01-14', status: 'late_return', purpose: 'Home visit' }
+];
+
 const SecurityDashboard: React.FC<SecurityDashboardProps> = ({
   user,
   securityAlerts,
@@ -35,6 +41,20 @@ const SecurityDashboard: React.FC<SecurityDashboardProps> = ({
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterDate, setFilterDate] = useState('');
+  const [outpassData, setOutpassData] = useState(mockOutpassData);
+  const [showOutpassForm, setShowOutpassForm] = useState(false);
+  const [newOutpass, setNewOutpass] = useState({
+    studentName: '',
+    roomNumber: '',
+    outpassType: 'day',
+    parentApproval: false,
+    outTime: '',
+    expectedReturn: '',
+    purpose: '',
+    image: null as File | null
+  });
+  const [editingOutpass, setEditingOutpass] = useState<string | null>(null);
+  const [returnStatus, setReturnStatus] = useState('on_time');
 
   const handleResolveAlert = (alertId: string) => {
     setSecurityAlerts(prev => 
@@ -81,7 +101,8 @@ const SecurityDashboard: React.FC<SecurityDashboardProps> = ({
   const sidebarItems = [
     { id: 'alerts', icon: AlertTriangle, label: 'Security Alerts' },
     { id: 'attendance', icon: Users, label: 'Student Attendance' },
-    { id: 'visitors', icon: Eye, label: 'Visitor Management' }
+    { id: 'visitors', icon: Eye, label: 'Visitor Management' },
+    { id: 'outpass', icon: Calendar, label: 'Outpass Management' }
   ];
 
   const renderContent = () => {
