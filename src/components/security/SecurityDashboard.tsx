@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   UserCheck, Users, Clock, AlertTriangle, CheckCircle, 
-  Search, Calendar, LogOut, Menu, X, Home, Eye, MessageSquare
+  Search, Calendar, LogOut, Menu, X, Home, Eye, MessageSquare, Plus, Download
 } from 'lucide-react';
 import { User as UserType, SecurityAlert } from '../../App';
 
