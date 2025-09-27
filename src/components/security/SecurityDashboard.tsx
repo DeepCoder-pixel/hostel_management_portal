@@ -57,7 +57,7 @@ const SecurityDashboard: React.FC<SecurityDashboardProps> = ({
     setSecurityAlerts(prev => 
       prev.map(alert => 
         alert.id === alertId 
-          ? { ...alert, status: 'resolved', resolvedAt: new Date(), resolutionNotes }
+          ? { ...alert, status: 'resolved' as any, resolvedAt: new Date() }
           : alert
       )
     );
@@ -68,6 +68,13 @@ const SecurityDashboard: React.FC<SecurityDashboardProps> = ({
 
   const handleRegisterVisitor = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!newVisitor.visitorName.trim() || !newVisitor.studentName.trim() || 
+        !newVisitor.roomNumber.trim() || !newVisitor.contactNumber.trim()) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+    
     const visitor = {
       id: Date.now().toString(),
       ...newVisitor,
